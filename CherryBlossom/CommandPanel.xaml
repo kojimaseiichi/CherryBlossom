@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="CherryBlossom.CommandPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CherryBlossom"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="80">
+    <StackPanel Orientation="Vertical" Width="80">
+        <Button>項目辞書</Button>
+        <Button>画面項目</Button>
+        <Button>帳票項目</Button>
+        <Button>DB項目</Button>
+        <Button>汎用マスタ</Button>
+        <Button>メッセージ</Button>
+    </StackPanel>
+</UserControl>
