@@ -109,6 +109,16 @@ namespace CherryBlossom
                 _appModel = value;
                 _dgItems.ItemsSource = _appModel.Items;
                 _dgMorphs.ItemsSource = _appModel.Morphs;
+                _appModel.Morphs.CollectionChanged += Morphs_CollectionChanged;
+            }
+        }
+
+        private void Morphs_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            foreach (var item in _appModel.Items)
+            {
+                var alpha = _makeItemAlpha(item.ItemExpression);
+                item.ItemAlpha = alpha;
             }
         }
 
@@ -128,14 +138,30 @@ namespace CherryBlossom
             if (bindingPath == nameof(item.ItemExpression))
             {
                 var tb = e.EditingElement as TextBox;
-                var reg = new System.Text.RegularExpressions.Regex("[ ]");
-                var alpha = reg.Split(tb.Text).Select(x =>
-                {
-                    var first = _appModel.Morphs.FirstOrDefault(p => p.Morph == x);
-                    if (first == null) return "?";
-                    return first.Alpha;
-                })
-                    .Aggregate((a, b) => a + "_" + b);
+                var itemExpression = tb.Text;
+                string alpha = _makeItemAlpha(itemExpression);
+                item.ItemAlpha = alpha;
+            }
+        }
+
+        private string _makeItemAlpha(string itemExpression)
+        {
+            var reg = new System.Text.RegularExpressions.Regex("[ ]");
+            var alpha = reg.Split(itemExpression).Select(x =>
+            {
+                var first = _appModel.Morphs.FirstOrDefault(p => p.Morph == x);
+                if (first == null) return "?";
+                return first.Alpha;
+            })
+                .Aggregate((a, b) => a + "_" + b);
+            return alpha;
+        }
+
+        private void _btnUpdateItems_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in _appModel.Items)
+            {
+                var alpha = _makeItemAlpha(item.ItemExpression);
                 item.ItemAlpha = alpha;
             }
         }

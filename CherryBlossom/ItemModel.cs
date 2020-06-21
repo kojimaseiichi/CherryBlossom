@@ -6,6 +6,8 @@ using System.Runtime.CompilerServices;
 using System.Reflection;
 using System.Windows.Controls;
 using System.Collections.ObjectModel;
+using Accessibility;
+using System.Security.Policy;
 
 namespace CherryBlossom
 {
@@ -21,11 +23,11 @@ namespace CherryBlossom
         private string _itemExpression = string.Empty;
         private string _itemAlpha = string.Empty;
         private ItemDataType _dataType;
-        private uint _length;
-        private int _rangeMin;
-        private int _rangeMax;
-        private uint _precition;
-        private uint _scale;
+        private string _length = string.Empty;
+        private string _precision = string.Empty;
+        private string _scale = string.Empty;
+        private string _rangeMin = string.Empty;
+        private string _rangeMax = string.Empty;
 
         public ObservableCollection<MorphModel> Morphs { get; set; }
 
@@ -65,9 +67,71 @@ namespace CherryBlossom
             set
             {
                 SetProperty(ref this._dataType, value);
+                OnPropertyChanged(nameof(IsEnabledLength));
+                OnPropertyChanged(nameof(IsEnabledPrecision));
+                OnPropertyChanged(nameof(IsEnabledScale));
+                OnPropertyChanged(nameof(IsEnabledRangeMin));
+                OnPropertyChanged(nameof(IsEnabledRangeMax));
+
             }
         }
 
+        public string Length
+        {
+            get { return _length; }
+            set { SetProperty(ref this._length, value); }
+        }
 
+        public bool IsEnabledLength
+        {
+            get
+            {
+                return _dataType == ItemDataType.Text;
+            }
+        }
+
+        public string Precision
+        {
+            get { return _precision; }
+            set { SetProperty(ref this._precision, value); }
+        }
+
+        public bool IsEnabledPrecision
+        {
+            get { return _dataType == ItemDataType.Numeric; }
+        }
+
+        public string Scale
+        {
+            get { return _scale; }
+            set { SetProperty(ref this._scale, value); }
+        }
+
+        public bool IsEnabledScale
+        {
+            get { return _dataType == ItemDataType.Numeric; }
+        }
+
+        public string RangeMin
+        {
+            get { return _rangeMin; }
+            set { SetProperty(ref this._rangeMin, value); }
+        }
+
+        public bool IsEnabledRangeMin
+        {
+            get { return _dataType == ItemDataType.Numeric; }
+        }
+
+        public string RangeMax
+        {
+            get { return _rangeMax; }
+            set { SetProperty(ref this._rangeMax, value); }
+        }
+
+        public bool IsEnabledRangeMax
+        {
+            get { return _dataType == ItemDataType.Numeric; }
+        }
     }
 }
