@@ -6,13 +6,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CherryBlossom.Persistent
 {
-    [Table("Item")]
-    public class ItemModel
+    [Table("Message")]
+    public class MessageModel
     {
         [Key]
         [Required]
-        public string ItemExpression { get; set; }
+        public string MessageId { get; set; }
+        public string Message { get; set; }
+        public string Remark { get; set; }
 
-        public string ItemAlpha { get; set; }
     }
 }

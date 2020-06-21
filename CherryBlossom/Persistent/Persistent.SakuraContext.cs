@@ -14,6 +14,8 @@ namespace CherryBlossom.Persistent
             _fileName = fileName;
         }
         public DbSet<ItemModel> Items { get; set; }
+        public DbSet<MorphModel> Morphs { get; set; }
+        public DbSet<MessageModel> Messages { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {

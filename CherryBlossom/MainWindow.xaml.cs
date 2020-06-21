@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,10 +24,62 @@ namespace CherryBlossom
     {
         private AppModel _appModel = new AppModel();
 
+        public AppModel AppModel
+        {
+            get { return _appModel; }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
-            this.Content = new PagePrimitive(_appModel);
+            var view = new DictionaryView(_appModel);
+            _placeholder.Children.Add(view);
+        }
+
+        private void _menuSave_Click(object sender, RoutedEventArgs e)
+        {
+            _Save();
+        }
+
+        private void _Save()
+        {
+            SaveFileDialog d = new SaveFileDialog();
+            if (d.ShowDialog() == true)
+            {
+                _appModel.Save(d.FileName);
+            }
+        }
+
+        private void _menuFileOpen_Click(object sender, RoutedEventArgs e)
+        {
+            _Load();
+        }
+
+        private void _Load()
+        {
+            OpenFileDialog d = new OpenFileDialog();
+            if (d.ShowDialog() == true)
+            {
+                _appModel = new AppModel();
+                _appModel.Load(d.FileName);
+                var view = new DictionaryView(_appModel);
+                _placeholder.Children.Clear();
+                _placeholder.Children.Add(view);
+            }
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            var result = MessageBox.Show("保存しますか？", "項目辞書", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                _Save();   
+            }
+            else if (result == MessageBoxResult.Cancel)
+            {
+                e.Cancel = true;
+            }
+            base.OnClosing(e);
         }
     }
 }

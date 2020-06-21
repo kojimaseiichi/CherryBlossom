@@ -14,13 +14,25 @@ using System.Windows.Shapes;
 namespace CherryBlossom
 {
     /// <summary>
-    /// CommandPanel.xaml の相互作用ロジック
+    /// DictionaryView.xaml の相互作用ロジック
     /// </summary>
-    public partial class CommandPanel : UserControl
+    public partial class DictionaryView : UserControl
     {
-        public CommandPanel()
+
+        private AppModel _appModel;
+
+        public AppModel AppModel
+        {
+            get { return _appModel; }
+        }
+
+        public DictionaryView(AppModel appModel)
         {
             InitializeComponent();
+            _appModel = appModel;
+            _dictView.AppModel = _appModel;
+            _treeNav.AppModel = _appModel;
         }
+
     }
 }

@@ -5,8 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CherryBlossom"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="項目辞書" Height="450" Width="800">
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="23"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <Menu>
+                <MenuItem Header="ファイル(_F)">
+                    <MenuItem Header="開く(_O)" x:Name="_menuFileOpen" Click="_menuFileOpen_Click"></MenuItem>
+                    <MenuItem Header="保存(_S)" x:Name="_menuSave" Click="_menuSave_Click"></MenuItem>
+                </MenuItem>
+            </Menu>
+        </Menu>
+        <Grid x:Name="_placeholder" Grid.Row="1">
+            
+        </Grid>
     </Grid>
+
 </Window>

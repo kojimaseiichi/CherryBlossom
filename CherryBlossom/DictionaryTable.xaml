@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="CherryBlossom.DictionaryTable"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:core="clr-namespace:System;assembly=System.Runtime"
+             xmlns:local="clr-namespace:CherryBlossom"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.Resources>
+            <CollectionViewSource x:Key="ItemCollection" Source="{Binding Path=AppModel.Items}" />
+            <CollectionViewSource x:Key="MorphCollection" Source="{Binding Path=AppModel.Morphs}" />
+            <ObjectDataProvider x:Key="_dataTypes" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type Type="local:ItemDataType"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <DataGrid x:Name="_dgItems" Grid.Column="0" AutoGenerateColumns="False" CellEditEnding="_dgItems_CellEditEnding">
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Header="(選択)"></DataGridCheckBoxColumn>
+                <DataGridTextColumn Header="辞書項目名">
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="ItemExpression" Mode="TwoWay" ValidatesOnDataErrors="True" UpdateSourceTrigger="LostFocus">
+                            <Binding.ValidationRules>
+                                <local:UniqueNameItemRule CurrentCollection="{StaticResource ItemCollection}" ValidationStep="CommittedValue"></local:UniqueNameItemRule>
+                                <local:ItemExpressionRule MorphCollection="{StaticResource MorphCollection}"></local:ItemExpressionRule>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn Header="アルファベット">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ItemAlpha, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridComboBoxColumn Header="型" SelectedItemBinding="{Binding ItemDataType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={StaticResource _dataTypes}}">
+
+                </DataGridComboBoxColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Stretch"></GridSplitter>
+        <DataGrid  x:Name="_dgMorphs" Grid.Column="2" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Header="(選択)"></DataGridCheckBoxColumn>
+                <DataGridTextColumn Header="形態素">
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="Morph" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+                            <Binding.ValidationRules>
+                                <local:UniqueMorphRule CurrentCollection="{StaticResource MorphCollection}" ValidatesOnTargetUpdated="True"></local:UniqueMorphRule>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="アルファベット">
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="Alpha" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+                            <Binding.ValidationRules>
+                                <local:UniqueMorphAlphaRule CurrentCollection="{StaticResource MorphCollection}" ValidatesOnTargetUpdated="True"></local:UniqueMorphAlphaRule>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>
