@@ -23,7 +23,7 @@ namespace CherryBlossom
 
         public override ValidationResult Validate(object value, System.Globalization.CultureInfo cultureInfo)
         {
-            if (value != null)
+            if (value != null && string.IsNullOrEmpty(value as string) == false)
             {
                 ObservableCollection<ItemModel> castedCollection = CurrentCollection.Source as ObservableCollection<ItemModel>;
                 var itemExpression = value as string;
@@ -39,9 +39,9 @@ namespace CherryBlossom
 
         public override ValidationResult Validate(object value, System.Globalization.CultureInfo cultureInfo)
         {
-            if (value != null)
+            if (value != null && string.IsNullOrEmpty(value as string) == false)
             {
-                    ObservableCollection<MorphModel> castedCollection = CurrentCollection.Source as ObservableCollection<MorphModel>;
+                ObservableCollection<MorphModel> castedCollection = CurrentCollection.Source as ObservableCollection<MorphModel>;
                 var morphName = value as string;
                 if (castedCollection.Count(x => morphName == x.Morph) > 1)
                     return new ValidationResult(false, value);
@@ -56,7 +56,7 @@ namespace CherryBlossom
 
         public override ValidationResult Validate(object value, System.Globalization.CultureInfo cultureInfo)
         {
-            if (value != null)
+            if (value != null && string.IsNullOrEmpty(value as string) == false)
             {
                 ObservableCollection<MorphModel> castedCollection = CurrentCollection.Source as ObservableCollection<MorphModel>;
                 var morphAlpha = value as string;
@@ -73,7 +73,7 @@ namespace CherryBlossom
 
         public override ValidationResult Validate(object value, System.Globalization.CultureInfo cultureInfo)
         {
-            if (value != null)
+            if (value != null && string.IsNullOrEmpty(value as string) == false)
             {
                 ObservableCollection<MorphModel> morphCollection = MorphCollection.Source as ObservableCollection<MorphModel>;
                 var itemExp = value as string;

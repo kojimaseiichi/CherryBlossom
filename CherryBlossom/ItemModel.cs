@@ -13,8 +13,13 @@ namespace CherryBlossom
 {
     public enum ItemDataType
     {
+        Char,
         Text,
-        Numeric
+        Decimal,
+        Int,
+        Long,
+        YYYYMM,
+        YYYYMMDD
     }
        
     public class ItemModel : ValidatableBase
@@ -28,6 +33,7 @@ namespace CherryBlossom
         private string _scale = string.Empty;
         private string _rangeMin = string.Empty;
         private string _rangeMax = string.Empty;
+        private string _regularExpression = string.Empty;
 
         public ObservableCollection<MorphModel> Morphs { get; set; }
 
@@ -50,6 +56,7 @@ namespace CherryBlossom
             }
         }
 
+        [Required]
         public string ItemAlpha
         {
             get { return _itemAlpha; }
@@ -61,6 +68,19 @@ namespace CherryBlossom
             get { return _itemExpression; }
         }
 
+        public string DataType
+        {
+            get { return _dataType.ToString(); }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                    _dataType = ItemDataType.Text;
+                else
+                    _dataType = ItemDataType.Parse<ItemDataType>(value);
+            }
+        }
+
+        [Required]
         public ItemDataType ItemDataType
         {
             get { return _dataType; }
@@ -72,7 +92,7 @@ namespace CherryBlossom
                 OnPropertyChanged(nameof(IsEnabledScale));
                 OnPropertyChanged(nameof(IsEnabledRangeMin));
                 OnPropertyChanged(nameof(IsEnabledRangeMax));
-
+                OnPropertyChanged(nameof(IsEnabledRegularExpression));
             }
         }
 
@@ -86,7 +106,8 @@ namespace CherryBlossom
         {
             get
             {
-                return _dataType == ItemDataType.Text;
+                return _dataType == ItemDataType.Text ||
+                    _dataType == ItemDataType.Char;
             }
         }
 
@@ -98,7 +119,7 @@ namespace CherryBlossom
 
         public bool IsEnabledPrecision
         {
-            get { return _dataType == ItemDataType.Numeric; }
+            get { return _dataType == ItemDataType.Decimal; }
         }
 
         public string Scale
@@ -109,7 +130,7 @@ namespace CherryBlossom
 
         public bool IsEnabledScale
         {
-            get { return _dataType == ItemDataType.Numeric; }
+            get { return _dataType == ItemDataType.Decimal; }
         }
 
         public string RangeMin
@@ -120,7 +141,9 @@ namespace CherryBlossom
 
         public bool IsEnabledRangeMin
         {
-            get { return _dataType == ItemDataType.Numeric; }
+            get { return _dataType == ItemDataType.Decimal ||
+                    _dataType == ItemDataType.Int ||
+                    _dataType == ItemDataType.Long; }
         }
 
         public string RangeMax
@@ -131,7 +154,23 @@ namespace CherryBlossom
 
         public bool IsEnabledRangeMax
         {
-            get { return _dataType == ItemDataType.Numeric; }
+            get
+            {
+                return _dataType == ItemDataType.Decimal ||
+                  _dataType == ItemDataType.Int ||
+                  _dataType == ItemDataType.Long;
+            }
+        }
+
+        public string RegularExpression
+        {
+            get { return _regularExpression; }
+            set { SetProperty(ref this._regularExpression, value); }
+        }
+
+        public bool IsEnabledRegularExpression
+        {
+            get { return _dataType == ItemDataType.Text; }
         }
     }
 }

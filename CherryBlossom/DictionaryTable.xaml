@@ -83,6 +83,15 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="正規表現">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBox Text="{Binding RegularExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="60" IsEnabled="{Binding IsEnabledRegularExpression, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
